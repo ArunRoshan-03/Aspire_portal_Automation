@@ -28,3 +28,15 @@ def read_data_from_excel(file_path):
 
     for row in data:
         print(row)
+
+
+def get_cell_value(file_path, sheet_name, column):
+    workbook = openpyxl.load_workbook(file_path)
+    sheet = workbook[sheet_name]
+    max_row = sheet.max_row
+
+    for row in range(2, max_row + 1):
+        cell_value = sheet[column + str(row)].value
+        print(cell_value)
+
+    workbook.close()

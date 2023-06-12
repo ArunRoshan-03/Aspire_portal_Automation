@@ -1,6 +1,8 @@
+import time
+
 import pytest as pytest
 from selenium import webdriver
-from pytest_bdd import given, then, when
+from pytest_bdd import given, then, when, parsers
 
 from lib.browser.pages.login_page import Login_page
 from lib.util.constants import website_url
@@ -15,26 +17,20 @@ def browser():
     driver.quit()
 
 
-@given('user launch browser and user enter Aspire url')
+@given('Aspire application is launched')
 def aspire_url(browser):
     browser.get(website_url)
-
-
-@given('I navigated to the Aspire login_page is displayed')
-def aspire_login_page(browser):
     login_pages = Login_page(browser)
     login_pages.aspire_login_text()
 
 
-@when("I fill the username <email_id> and password <password> on login_page")
-def login_details(browser, email_id, password):
+@given(parsers.parse("I login into aspire portal page as a {user_type:w}"))
+def login_user(browser, user_type):
     login_pages = Login_page(browser)
-    login_pages.user_email_id_credentials(email_id)
-    login_pages.user_password_credentials(password)
+    login_pages.user_login(user_type)
 
 
-@when("I click login button on the login button")
-def login_button(browser):
+@given('I navigated to aspire portal home page')
+def aspire_home_page(browser):
     login_pages = Login_page(browser)
-    # login_pages.click_captcha_button()
-    login_pages.click_login_button()
+    login_pages.home_page()
