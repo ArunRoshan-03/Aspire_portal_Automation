@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 
 from lib.browser.pages.driver_commands import BasicActions
 from lib.data.timesheet_data import *
+from lib.util.constants import *
 from lib.util.utilities import utilities
 
 
@@ -40,6 +41,7 @@ class TimeSheet_Page(BasicActions):
     saturday_data_text_box_loc = (By.XPATH, "//td[contains(@data-day,'Sat')]")
     sunday_data_text_box_loc = (By.XPATH, "//td[contains(@data-day,'Sun')]")
     submit_for_approval_button_loc = (By.XPATH, "//a[@id='le_0']")
+    submitted_label_text_loc = (By.XPATH, "//span[contains(@class,'Submitted')]")
 
     @property
     def time_sheet_link(self):
@@ -137,6 +139,10 @@ class TimeSheet_Page(BasicActions):
     def submit_for_approval_button(self):
         return self.web_driver.find_element(*self.submit_for_approval_button_loc)
 
+    @property
+    def submitted_label_text(self):
+        return self.web_driver.find_element(*self.submitted_label_text_loc)
+
     def verify_time_sheet_link(self):
         self.element_is_displayed(self.time_sheet_link)
         self.assert_element_value(self.time_sheet_link, time_sheet_link_text)
@@ -207,13 +213,11 @@ class TimeSheet_Page(BasicActions):
 
     def click_activity_dropdown_box(self):
         self.click_element(self.activity_drop_down_box)
-        self.select_by_xpath(self.activity_option, "Documentation/Reports")
+        self.select_by_xpath(self.activity_option, documentation_reports_activity)
 
     def click_save_button(self):
         self.wait_for_elements_present(self.save_button_loc)
         self.click_element(self.save_button)
-        self.wait_for_elements_present(self.okay_button_loc)
-        self.click_element(self.okay_button)
 
     def verify_monday_timing_text(self):
         self.wait_for_elements_present(self.monday_timing_text_box_loc)
@@ -257,3 +261,17 @@ class TimeSheet_Page(BasicActions):
         self.verify_thursday_timing_text()
         self.verify_saturday_timing_text()
         self.verify_sunday_timing_text()
+
+    def click_submit_button(self):
+        self.click_element(self.submit_for_approval_button)
+
+    def timesheet_page_reload(self):
+        self.page_reload()
+
+    def verify_timesheet_page_reload(self):
+        self.check_page_reload(time_sheet_url)
+
+    def verify_submitted_label_text(self):
+        self.wait_for_elements_present(self.submitted_label_text_loc)
+        self.page_reload()
+        self.assert_element_value(self.submitted_label_text, submitted_text)

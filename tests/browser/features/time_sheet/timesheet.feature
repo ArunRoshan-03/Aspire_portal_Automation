@@ -5,25 +5,36 @@ Feature: Time sheet module
 
   Background:
     Given Aspire application is launched
-    And I login into aspire portal page as a employee
-    And I navigated to aspire portal home page
+    And login into aspire portal page as a employee
 
 
-  Scenario: Validate the time sheet link on home page
-    Then I validate the time sheet link
+  Scenario: Validate the time sheet link is displayed on home page
+    Then validate user navigating to aspire portal home page
+    And verify the time sheet link is displayed on homepage.
 
-  Scenario: Validate the time sheet page
-    When I click on the time sheet link on the homepage
-    Then I validate the time sheet page
 
+  Scenario: Validate that the timesheet page title is visible.
+    When click on the time sheet link on the homepage
+    Then validate user navigating to timesheet page
+    And verify the time sheet page title that appears on the time sheet page.
 
   Scenario: Validate user can see the current week's dates on the time sheet
-    When I click on the time sheet link on the homepage
-    Then I validate the current week's dates
+    When click on the time sheet link on the homepage
+    And navigating to timesheet page
+    Then validate the current week's dates that appear on the time sheet page.
+
 
   Scenario: Validate users can add activities and save the time sheet for the current week.
-    When I click on the time sheet link on the homepage
-    And I enter the timings from the entire week to the time sheet
-    Then I validate activities and save time sheet.
+    When click on the time sheet link on the homepage
+    And navigating to timesheet page
+    And enter the times for the entire week and then save the time sheet.
+    Then validate activities saved on the time sheet.
+
+  Scenario: Validate users can add activities and submit the weekly time sheet.
+    When click on the time sheet link on the homepage
+    And navigating to timesheet page
+    And enter the times for the entire week and then submit the time sheet.
+    Then validate activities submitted on time sheet.
+
 
 

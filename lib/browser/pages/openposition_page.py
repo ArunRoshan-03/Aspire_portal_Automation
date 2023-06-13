@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 
 from lib.browser.pages.driver_commands import BasicActions
 from lib.data.openpositions_page_data import *
+from lib.util.constants import *
 from lib.util.utilities import utilities
 
 
@@ -25,7 +26,6 @@ class OpenPosition_Page(BasicActions):
     cancel_button_loc = (By.XPATH, "//*[@class='modal-dialog']/div/div/button/span")
     position_text_loc = (By.XPATH, "(//*[@class='modal-body']/p[1])")
     alert_table_loc = (By.XPATH, "//*[@class='modal fade']")
-
 
     @property
     def open_position_link(self):
@@ -63,6 +63,9 @@ class OpenPosition_Page(BasicActions):
         self.wait_for_elements_present(self.open_position_page_loc)
         self.element_is_displayed(self.open_position_page_title)
 
+    def verify_open_position_page_reload(self):
+        self.check_page_reload(open_position_sheet_url)
+
     def verify_open_position_page(self):
         self.wait_for_elements_present(self.open_position_page_loc)
         open_position_title_text = self.get_text_element(self.open_position_page_title)
@@ -82,3 +85,6 @@ class OpenPosition_Page(BasicActions):
 
             cancel_button = self.cancel_button[self.list_position_link.index(position_button_count)]
             self.click_element(cancel_button)
+
+    def open_position_page_reload(self):
+        self.page_reload()

@@ -24,13 +24,13 @@ def aspire_url(browser):
     login_pages.aspire_login_text()
 
 
-@given(parsers.parse("I login into aspire portal page as a {user_type:w}"))
+@given(parsers.parse("login into aspire portal page as a {user_type:w}"))
 def login_user(browser, user_type):
     login_pages = Login_page(browser)
     login_pages.user_login(user_type)
 
 
-@given('I navigated to aspire portal home page')
+@then('validate user navigating to aspire portal home page')
 def aspire_home_page(browser):
     login_pages = Login_page(browser)
-    login_pages.home_page()
+    login_pages.verify_home_page_reload()

@@ -128,6 +128,14 @@ class BasicActions:
     def wait_for_elements_visible(self, element, timeout=10):
         WebDriverWait(self.web_driver, timeout).until(EC.visibility_of(element))
 
+    def page_reload(self):
+        current_url = self.web_driver.current_url
+        print(current_url)
+
+    def page_title(self):
+        current_title = self.web_driver.title
+        return current_title
+
     def clear_by_xpath(self, element):
         try:
             self.web_element = element
@@ -162,3 +170,13 @@ class BasicActions:
                     option_element.click()
             except Exception as error:
                 print(error)
+
+    def check_page_reload(self, expected_url):
+        current_url = self.web_driver.current_url
+
+        if current_url == expected_url:
+            print(f"Page has reloaded successfully Url:'{current_url}'")
+            return True
+        else:
+            print(f"Page has not reloaded yetUrl:'{current_url}'")
+            return False

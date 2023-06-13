@@ -1,3 +1,4 @@
+from lib.util.constants import *
 from lib.util.utilities import utilities
 from selenium.webdriver.common.by import By
 
@@ -9,6 +10,7 @@ class Login_page(BasicActions):
 
     def __init__(self, web_driver):
         super().__init__(web_driver)
+        self.login_page = []
 
     # Locator
     email_textbox_loc = (By.XPATH, "//input[@name='email']")
@@ -64,9 +66,8 @@ class Login_page(BasicActions):
     def click_login_button(self):
         self.click_element(self.login_button)
 
-    def home_page(self):
-        self.wait_for_elements_present(self.home_page_loc)
-        self.element_is_displayed(self.home_page_text)
+    def verify_home_page_reload(self):
+        self.check_page_reload(dash_board_url)
 
     def verify_home_page(self):
         self.wait_for_elements_present(self.home_page_loc)
