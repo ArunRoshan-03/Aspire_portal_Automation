@@ -119,6 +119,9 @@ class BasicActions:
         locator = (By.XPATH, xpath)
         return locator
 
+    def xpath_to_locators(self, locator):
+        return self.web_driver.find_elements(*locator)
+
     def wait_for_elements(self, locator, timeout=10):
         WebDriverWait(self.web_driver, timeout).until(EC.presence_of_all_elements_located(locator))
 
@@ -180,3 +183,6 @@ class BasicActions:
         else:
             print(f"Page has not reloaded yetUrl:'{current_url}'")
             return False
+
+    def navigate_back(self):
+        self.web_driver.back()
