@@ -51,7 +51,7 @@ class Login_page(BasicActions):
             self.enter_text_field(self.email_text_box, employee_user)
             self.user_password_credentials()
             self.click_login_button()
-        elif user_type in "manger":
+        elif user_type in "manager":
             self.wait_for_elements_present(self.email_textbox_loc)
             self.enter_text_field(self.email_text_box, manger_user)
             self.user_password_credentials()

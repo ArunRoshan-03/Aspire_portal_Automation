@@ -106,7 +106,6 @@ class BasicActions:
         for element in elements:
             try:
                 texts.append(element.text)
-                print(texts)
             except NoSuchElementException:
                 print("No Such element")
                 assert False

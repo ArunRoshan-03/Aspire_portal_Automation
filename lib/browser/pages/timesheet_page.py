@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from lib.browser.pages.driver_commands import BasicActions
 from lib.data.timesheet_data import *
 from lib.util.constants import *
+from lib.util.excelhandling import *
 from lib.util.utilities import utilities
 
 
@@ -42,6 +43,29 @@ class TimeSheet_Page(BasicActions):
     sunday_data_text_box_loc = (By.XPATH, "//td[contains(@data-day,'Sun')]")
     submit_for_approval_button_loc = (By.XPATH, "//a[@id='le_0']")
     submitted_label_text_loc = (By.XPATH, "//span[contains(@class,'Submitted')]")
+    profile_image_label_loc = (
+        By.XPATH, "//a[@class='nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic']")
+    logout_button_loc = (By.XPATH, "//button[normalize-space()='Logout']")
+    reports_button_loc = (By.XPATH, "//a[normalize-space()='Reports']")
+    client_drop_down_box_loc = (By.XPATH, "(//b[@role='presentation'])[1]")
+    client_option_loc = (By.XPATH, "//ul[@id='select2-selectClient-results']/li")
+    start_date_loc = (By.XPATH, "//input[@id='startDate']")
+    end_date_loc = (By.XPATH, "//input[@id='endDate']")
+    export_button_loc = (By.XPATH, "//button[normalize-space()='Export']")
+    export_data_table_loc = (By.XPATH, "//ul[@id='exportTab']//a[@id='exporthome-tab']")
+    emp_Id_loc = (By.XPATH, "(//*[@id='exportTable']/thead/tr/th[1])[1]| //div[3]//div[1]/table/tbody/tr/td[1]")
+    emp_monday_timing_data_loc = (
+        By.XPATH, "(//*[@id='exportTable']/thead/tr/th[10])[1]| //div[3]//div[1]/table/tbody/tr/td[10] ")
+    emp_tuesday_timing_data_loc = (
+        By.XPATH, "(//*[@id='exportTable']/thead/tr/th[11])[1]| //div[3]//div[1]/table/tbody/tr/td[11] ")
+    emp_wednesday_timing_data_loc = (
+        By.XPATH, "(//*[@id='exportTable']/thead/tr/th[12])[1]| //div[3]//div[1]/table/tbody/tr/td[12] ")
+    emp_thursday_timing_data_loc = (
+        By.XPATH, "(//*[@id='exportTable']/thead/tr/th[13])[1]| //div[3]//div[1]/table/tbody/tr/td[13] ")
+    emp_friday_timing_data_loc = (
+        By.XPATH, "(//*[@id='exportTable']/thead/tr/th[14])[1]| //div[3]//div[1]/table/tbody/tr/td[14] ")
+
+    # export_button_loc = (By.XPATH, "//button[normalize-space()='Export']")
 
     @property
     def time_sheet_link(self):
@@ -143,6 +167,66 @@ class TimeSheet_Page(BasicActions):
     def submitted_label_text(self):
         return self.web_driver.find_element(*self.submitted_label_text_loc)
 
+    @property
+    def profile_image_label(self):
+        return self.web_driver.find_element(*self.profile_image_label_loc)
+
+    @property
+    def logout_button(self):
+        return self.web_driver.find_element(*self.logout_button_loc)
+
+    @property
+    def reports_button(self):
+        return self.web_driver.find_element(*self.reports_button_loc)
+
+    @property
+    def client_drop_down_box(self):
+        return self.web_driver.find_element(*self.client_drop_down_box_loc)
+
+    @property
+    def client_option(self):
+        return self.web_driver.find_element(*self.client_option_loc)
+
+    @property
+    def start_date_text_box(self):
+        return self.web_driver.find_element(*self.start_date_loc)
+
+    @property
+    def end_date_text_box(self):
+        return self.web_driver.find_element(*self.end_date_loc)
+
+    @property
+    def export_button(self):
+        return self.web_driver.find_element(*self.export_button_loc)
+
+    @property
+    def export_data_table(self):
+        return self.web_driver.find_element(*self.export_data_table_loc)
+
+    @property
+    def emp_Id_data(self):
+        return self.web_driver.find_elements(*self.emp_Id_loc)
+
+    @property
+    def emp_monday_timing_data(self):
+        return self.web_driver.find_elements(*self.emp_monday_timing_data_loc)
+
+    @property
+    def emp_tuesday_timing_data(self):
+        return self.web_driver.find_elements(*self.emp_tuesday_timing_data_loc)
+
+    @property
+    def emp_wednesday_timing_data(self):
+        return self.web_driver.find_elements(*self.emp_wednesday_timing_data_loc)
+
+    @property
+    def emp_thursday_timing_data(self):
+        return self.web_driver.find_elements(*self.emp_thursday_timing_data_loc)
+
+    @property
+    def emp_friday_timing_data(self):
+        return self.web_driver.find_elements(*self.emp_friday_timing_data_loc)
+
     def verify_time_sheet_link(self):
         self.element_is_displayed(self.time_sheet_link)
         self.assert_element_value(self.time_sheet_link, time_sheet_link_text)
@@ -208,8 +292,6 @@ class TimeSheet_Page(BasicActions):
         self.enter_wednesday_timings(common_timing)
         self.enter_thursday_timings(common_timing)
         self.enter_friday_timings(common_timing)
-        self.enter_saturday_timings(common_timing)
-        self.enter_sunday_timings(common_timing)
 
     def click_activity_dropdown_box(self):
         self.click_element(self.activity_drop_down_box)
@@ -275,3 +357,50 @@ class TimeSheet_Page(BasicActions):
         self.wait_for_elements_present(self.submitted_label_text_loc)
         self.page_reload()
         self.assert_element_value(self.submitted_label_text, submitted_text)
+
+    def click_logout_button(self):
+        self.wait_for_elements_present(self.profile_image_label_loc)
+        self.click_element(self.profile_image_label)
+        self.wait_for_elements_present(self.logout_button_loc)
+        self.click_element(self.logout_button)
+        self.page_reload()
+
+    def click_reports_button(self):
+        self.wait_for_elements_present(self.reports_button_loc)
+        self.click_element(self.reports_button)
+
+    def reload_reports_page(self):
+        self.page_reload()
+
+    def click_client_dropdown_box(self):
+        self.click_element(self.client_drop_down_box)
+        self.select_by_xpath(self.client_option, client_name)
+
+    def select_start_date(self):
+        self.wait_for_elements_present(self.start_date_loc)
+        self.clear_by_xpath(self.start_date_text_box)
+        self.enter_text_field(self.start_date_text_box, "12/06/2023")
+
+    def select_end_date(self):
+        self.wait_for_elements_present(self.end_date_loc)
+        self.clear_by_xpath(self.end_date_text_box)
+        self.enter_text_field(self.end_date_text_box, "18/06/2023")
+
+    def click_export_button(self):
+        self.click_element(self.export_button)
+
+    def export_data_tabel_is_displayed(self):
+        self.assert_element_value(self.export_data_table, "Export Data")
+
+    def export_data(self):
+        self.wait_for_elements_present(self.emp_Id_loc)
+        emp_id_text = self.get_text_elements(self.emp_Id_data)
+        emp_monday_timing_text = self.get_text_elements(self.emp_monday_timing_data)
+        emp_tuesday_timing_text = self.get_text_elements(self.emp_tuesday_timing_data)
+        emp_wednesday_timing_text = self.get_text_elements(self.emp_wednesday_timing_data)
+        emp_thursday_timing_text = self.get_text_elements(self.emp_thursday_timing_data)
+        emp_friday_timing_text = self.get_text_elements(self.emp_friday_timing_data)
+        data = zip(emp_id_text, emp_monday_timing_text, emp_tuesday_timing_text, emp_wednesday_timing_text,
+                   emp_thursday_timing_text, emp_friday_timing_text)
+        write_data_to_excel(file_path, data, 'time_sheet')
+        validate_time_sheet(file_path)

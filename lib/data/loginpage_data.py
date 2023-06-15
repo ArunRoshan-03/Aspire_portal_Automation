@@ -1,5 +1,5 @@
 login_page_title = "Welcome to Aspire"
-employee_user = "testuser1@atmecs.com"
-manger_user = "testmanager1@atmecs.com"
+employee_user = "testuser5@atmecs.com"
+manger_user = "testmanager3@atmecs.com"
 user_password = "Atmecs@123"
 home_page = "Dashboard"
