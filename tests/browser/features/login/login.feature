@@ -6,4 +6,3 @@ Feature: Aspire login page
 
   Scenario: Validate the users logs with employee valid credentials
     Then validate user logs with employee credentials and access Aspire portal homepage.
-

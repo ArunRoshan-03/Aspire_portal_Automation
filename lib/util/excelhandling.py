@@ -9,9 +9,12 @@ def create_excel_sheet(file_path):
 
 
 def write_data_to_excel(file_path, data, sheet_name):
-    workbook = openpyxl.Workbook()
-    sheet = workbook.active
-    sheet.title = sheet_name
+    workbook = openpyxl.load_workbook(file_path)
+
+    if sheet_name in workbook.sheetnames:
+        workbook.remove(workbook[sheet_name])
+
+    sheet = workbook.create_sheet(title=sheet_name)
 
     for row_index, row_data in enumerate(data, start=1):
         for col_index, cell_value in enumerate(row_data, start=1):
@@ -43,15 +46,18 @@ def get_cell_value(file_path, sheet_name, column):
     workbook.close()
 
 
-def validate_time_sheet(file_path):
-    # Load the Excel file
+def validate_time_sheet(file_path, new_sheet):
     workbook = openpyxl.load_workbook(file_path)
+    if new_sheet in workbook.sheetnames:
+        workbook.remove(workbook[new_sheet])
+        print(f'Workbook sheet as updated{new_sheet}')
+
     worksheet = workbook.active
 
-    # Initialize a list to store the results
+    results_sheet = workbook.create_sheet(new_sheet)
+
     results = []
 
-    # Iterate through the rows starting from the second row (excluding the header)
     for row in worksheet.iter_rows(min_row=2, values_only=True):
         emp_id = row[0]
         times = row[1:]
@@ -59,35 +65,50 @@ def validate_time_sheet(file_path):
         continuous_times_below_7 = False
         weeks = []
 
-        # Iterate through the time values
         for i, time_value in enumerate(times, start=1):
             if isinstance(time_value, time) and time_value.hour <= 7:
                 if not continuous_times_below_7:
-                    # Start of a continuous sequence of times below or equal to 7
                     week = worksheet.cell(row=1, column=i + 1).value
                     weeks.append(week)
-                    # continuous_times_below_7 = True
             else:
                 if continuous_times_below_7 or time_value == "-":
-                    # End of a continuous sequence of times below or equal to 7
                     continuous_times_below_7 = False
                 if time_value == "-":
-                    # Include rows with "-" values and get the week
                     week = worksheet.cell(row=1, column=i + 1).value
                     weeks.append(week)
 
         if len(weeks) >= 2 or continuous_times_below_7:
-            # Store the employee ID and the weeks with continuous times below or equal to 7
-            results.append((emp_id, weeks))
+            results.append(emp_id)
 
-    # Print the results
-    for emp_id, weeks in results:
-        print(f"Employee ID: {emp_id}")
-        if weeks:
-            print("Timesheet as less than 7 hours or empty data")
-            for week in weeks:
-                print(f"Week: {week} ")
-        print()
+    results_sheet.append(["Employee ID"])
+    for emp_id in results:
+        print(emp_id)
+        results_sheet.append([emp_id])
 
-    # Close the workbook
+    workbook.save(file_path)
+
+
+def validate_and_get_email(file_path, expected_sheet, actual_sheet):
+    workbook = openpyxl.load_workbook(file_path)
+
+    results_sheet = workbook[expected_sheet]
+    wk_sheet = workbook[actual_sheet]
+
+    emp_data = {}
+
+    for row in wk_sheet.iter_rows(min_row=2, values_only=True):
+        emp_id = row[0]
+        emp_emailID = row[1]
+        emp_data[emp_id] = emp_emailID
+
+    results = []
+
+    for row in results_sheet.iter_rows(min_row=2, values_only=True):
+        emp_id = row[0]
+        emp_emailID = emp_data.get(emp_id)
+        if emp_emailID:
+            results.append(emp_emailID)
+
     workbook.close()
+
+    return results

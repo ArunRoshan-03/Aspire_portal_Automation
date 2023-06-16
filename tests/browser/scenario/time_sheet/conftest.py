@@ -48,8 +48,7 @@ def validate_current_weeks_date(browser):
     timesheet_page.verify_current_dates()
 
 
-# @when('enter the times for the entire week and then save the time sheet.')
-@when('I am enter the working hours for the week and submit the time sheet.')
+@when('I enter the working hours for the week and save the timesheet')
 def enter_timing_and_save_time_sheet(browser):
     timesheet_page = TimeSheet_Page(browser)
     timesheet_page.click_activity_dropdown_box()
@@ -63,7 +62,7 @@ def validate_activities_saved_on_time_sheet(browser):
     timesheet_page.verify_activity_timing()
 
 
-# @when('I am enter the working hours for the week and submit the time sheet.')
+@when('I enter the working hours for the week and submit the timesheet')
 def enter_timing_and_submit_time_sheet(browser):
     timesheet_page = TimeSheet_Page(browser)
     timesheet_page.click_activity_dropdown_box()
@@ -77,13 +76,13 @@ def validate_activities_submit_on_time_sheet(browser):
     timesheet_page.verify_submitted_label_text()
 
 
-@when('logout and loads the login page.')
+@when('I log out and return to the login page')
 def logout_and_loads_login_page(browser):
     timesheet_page = TimeSheet_Page(browser)
     timesheet_page.click_logout_button()
 
 
-@when(parsers.parse("login into aspire portal page as a {user_type:w}."))
+@when(parsers.parse("I login into aspire portal page as a {user_type:w}."))
 def login_user(browser, user_type):
     login_pages = Login_page(browser)
     login_pages.user_login(user_type)
@@ -95,13 +94,13 @@ def click_reports_button(browser):
     timesheet_page.click_reports_button()
 
 
-@when('reports page is loaded.')
+@when('the reports page is loaded.')
 def loaded_reports_page(browser):
     timesheet_page = TimeSheet_Page(browser)
     timesheet_page.reload_reports_page()
 
 
-@when('select the client, start date and end start data on the project wise table.')
+@when('I select the client, start date and end start data on the project wise table.')
 def select_client_start_data_and_end_date(browser):
     timesheet_page = TimeSheet_Page(browser)
     timesheet_page.click_client_dropdown_box()
@@ -109,31 +108,25 @@ def select_client_start_data_and_end_date(browser):
     timesheet_page.select_end_date()
 
 
-@when('click the export button')
+@when('I click the export button')
 def click_export_button(browser):
     timesheet_page = TimeSheet_Page(browser)
     timesheet_page.click_export_button()
 
 
-@when('the export data as appear on the project wise table.')
+@then('the exported data as appear on the project wise table.')
 def export_data_loaded(browser):
     timesheet_page = TimeSheet_Page(browser)
     timesheet_page.export_data_tabel_is_displayed()
 
 
-@when('the weekday timing of the employee.')
-def weekday_timing(browser):
+@then('I validate the weekday timing of the employee.')
+def validate_weekday_timing(browser):
     timesheet_page = TimeSheet_Page(browser)
-    timesheet_page.export_data()
+    timesheet_page.working_timing_table()
 
 
-@then('validate if employee as more than 45 working hours')
-def validate_employee_working_hours(browser):
+@then('If the employee has less than working hours,an email should be sent to the employee.')
+def verify_email_send_to_employees(browser):
     timesheet_page = TimeSheet_Page(browser)
-    pass
-
-
-@then('send email to employee')
-def send_email(browser):
-    timesheet_page = TimeSheet_Page(browser)
-    pass
+    timesheet_page.verify_sending_email_to_employee()

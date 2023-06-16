@@ -1,11 +1,14 @@
 import re
 import time
+from builtins import staticmethod
 
 from selenium.webdriver.common.by import By
 
 from lib.browser.pages.driver_commands import BasicActions
+from lib.data.mail_data import *
 from lib.data.timesheet_data import *
 from lib.util.constants import *
+from lib.util.email_generated import send_email
 from lib.util.excelhandling import *
 from lib.util.utilities import utilities
 
@@ -379,20 +382,20 @@ class TimeSheet_Page(BasicActions):
     def select_start_date(self):
         self.wait_for_elements_present(self.start_date_loc)
         self.clear_by_xpath(self.start_date_text_box)
-        self.enter_text_field(self.start_date_text_box, "12/06/2023")
+        self.enter_text_field(self.start_date_text_box, start_date_data)
 
     def select_end_date(self):
         self.wait_for_elements_present(self.end_date_loc)
         self.clear_by_xpath(self.end_date_text_box)
-        self.enter_text_field(self.end_date_text_box, "18/06/2023")
+        self.enter_text_field(self.end_date_text_box, end_date_data)
 
     def click_export_button(self):
         self.click_element(self.export_button)
 
     def export_data_tabel_is_displayed(self):
-        self.assert_element_value(self.export_data_table, "Export Data")
+        self.assert_element_value(self.export_data_table, export_data_text)
 
-    def export_data(self):
+    def working_timing_table(self):
         self.wait_for_elements_present(self.emp_Id_loc)
         emp_id_text = self.get_text_elements(self.emp_Id_data)
         emp_monday_timing_text = self.get_text_elements(self.emp_monday_timing_data)
@@ -402,5 +405,13 @@ class TimeSheet_Page(BasicActions):
         emp_friday_timing_text = self.get_text_elements(self.emp_friday_timing_data)
         data = zip(emp_id_text, emp_monday_timing_text, emp_tuesday_timing_text, emp_wednesday_timing_text,
                    emp_thursday_timing_text, emp_friday_timing_text)
-        write_data_to_excel(file_path, data, 'time_sheet')
-        validate_time_sheet(file_path)
+        write_data_to_excel(file_path, data, sheet_name)
+
+    def verify_sending_email_to_employee(self):
+        validate_time_sheet(file_path, expected_sheet_name)
+        results = validate_and_get_email(file_path, expected_sheet_name, actual_sheet_name)
+        email_sent = send_email(subject, message, from_email, results, username, password)
+        if email_sent:
+            print("Email sent successfully.")
+        else:
+            print("Failed to send email.")
