@@ -3,4 +3,4 @@ message = "Hi Guys " \
           "Please update or check your timesheet properly "
 from_email = 'arunroshan.r@atmecs.com'
 username = 'arunroshan.r@atmecs.com'
-password = 'Atmecs#12345'
+password = 'Arun#03081999'
