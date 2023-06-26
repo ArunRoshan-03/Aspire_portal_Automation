@@ -31,13 +31,6 @@ Feature: Time sheet module
     And  I enter the working hours for the week and save the timesheet
     Then validate activities saved on the time sheet.
 
-
-  Scenario: Validate users can add activities and submit the weekly time sheet.
-    When I click on the time sheet link on the homepage
-    And timesheet page is loaded
-    And I enter the working hours for the week and submit the timesheet
-    Then validate activities submitted on time sheet.
-
   @ar
   Scenario: Validating the Timesheet Submitted by an Employee as a Manager.
     When I click on the time sheet link on the homepage

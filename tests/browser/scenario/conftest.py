@@ -1,8 +1,6 @@
-import time
-
 import pytest as pytest
+from pytest_bdd import given, then, parsers
 from selenium import webdriver
-from pytest_bdd import given, then, when, parsers
 
 from lib.browser.pages.login_page import Login_page
 from lib.util.constants import website_url

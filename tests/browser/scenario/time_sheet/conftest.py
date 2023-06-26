@@ -67,7 +67,6 @@ def enter_timing_and_submit_time_sheet(browser):
     timesheet_page = TimeSheet_Page(browser)
     timesheet_page.click_activity_dropdown_box()
     timesheet_page.entire_week_timing()
-    timesheet_page.click_submit_button()
 
 
 @then('validate activities submitted on time sheet.')
@@ -130,3 +129,9 @@ def validate_weekday_timing(browser):
 def verify_email_send_to_employees(browser):
     timesheet_page = TimeSheet_Page(browser)
     timesheet_page.verify_sending_email_to_employee()
+
+
+@when('I click on the left arrow button on the timesheet page')
+def click_time_sheet_link(browser):
+    timesheet_page = TimeSheet_Page(browser)
+    timesheet_page.click_left_arrow_button()

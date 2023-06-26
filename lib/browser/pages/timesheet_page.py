@@ -2,6 +2,7 @@ import re
 import time
 from builtins import staticmethod
 
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from lib.browser.pages.driver_commands import BasicActions
@@ -68,7 +69,7 @@ class TimeSheet_Page(BasicActions):
     emp_friday_timing_data_loc = (
         By.XPATH, "(//*[@id='exportTable']/thead/tr/th[14])[1]| //div[3]//div[1]/table/tbody/tr/td[14] ")
 
-    # export_button_loc = (By.XPATH, "//button[normalize-space()='Export']")
+    left_arrow_button_loc = (By.XPATH, "//span[@class='fa fa-caret-left ']")
 
     @property
     def time_sheet_link(self):
@@ -229,6 +230,10 @@ class TimeSheet_Page(BasicActions):
     @property
     def emp_friday_timing_data(self):
         return self.web_driver.find_elements(*self.emp_friday_timing_data_loc)
+
+    @property
+    def left_arrow_button(self):
+        return self.web_driver.find_element(*self.left_arrow_button_loc)
 
     def verify_time_sheet_link(self):
         self.element_is_displayed(self.time_sheet_link)

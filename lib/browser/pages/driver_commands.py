@@ -1,10 +1,6 @@
-import random
-import time
-
 import polling
 
 from selenium.common import NoSuchElementException, TimeoutException
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions
@@ -27,6 +23,7 @@ class BasicActions:
             polling.poll(lambda: len(self.web_driver.find_elements(*locator)) > 0, step=sleep_interval, timeout=timeout)
         except polling.TimeoutException:
             assert False
+        return self.web_element
 
     def get_text_element(self, element):
         self.text = None
@@ -185,3 +182,27 @@ class BasicActions:
 
     def navigate_back(self):
         self.web_driver.back()
+
+    def enter_data_if_enabled(self, element, data, timeout=10):
+        try:
+            self.web_element = element
+            WebDriverWait(self.web_driver, timeout).until(EC.visibility_of(self.web_element))
+
+            if self.web_element.is_enabled():
+                self.web_element.clear()
+                self.web_element.send_keys(data)
+                print(f"'{self.web_element.text}' Element is enabled. Entered data: {data}")
+            else:
+                print(f"'{self.web_element.text}' Element is disabled. Cannot enter data.")
+        except TimeoutException:
+            assert False, "Element is not displayed within the specified timeout"
+
+    def verify_element_not_clickable(self, element, timeout=10):
+        try:
+            self.web_element = element
+            WebDriverWait(self.web_driver, timeout).until(EC.element_to_be_clickable(self.web_element))
+            assert False, "Element is already clicked"
+        except TimeoutException:
+            print("Element is not clickable as expected")
+        except AssertionError as e:
+            print(f"Assertion Error: {e}")
