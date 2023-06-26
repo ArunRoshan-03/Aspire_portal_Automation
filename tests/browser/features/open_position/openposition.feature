@@ -5,7 +5,6 @@ Feature: Open position module
     Given Aspire application is launched
     And login into aspire portal page as a employee
 
-
   Scenario: Validate the open position link is displayed on home page
     Then validate user navigating to aspire portal home page
     And verify the open position link is displayed on homepage.
@@ -14,7 +13,6 @@ Feature: Open position module
     When click on the open position link on the homepage
     Then validate user navigating to open position page
     And verify the open position page title that appears on the open sheet page.
-
 
   Scenario: Validate the job title list is visible on the open position page.
     When click on the open position link on the homepage

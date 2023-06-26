@@ -302,6 +302,7 @@ class TimeSheet_Page(BasicActions):
         self.enter_friday_timings(common_timing)
 
     def click_activity_dropdown_box(self):
+        self.wait_for_elements_present(self.activity_drop_down_box_loc)
         self.click_element(self.activity_drop_down_box)
         self.select_by_xpath(self.activity_option, documentation_reports_activity)
 
